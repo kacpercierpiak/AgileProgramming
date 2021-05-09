@@ -1,0 +1,16 @@
+<button mat-raised-button routerLink="/projects" style="margin:10px">Back</button>
+<div class="container">
+
+    <h1>Upload File</h1>
+    <h4>{{projectName}}</h4>
+    <h5>{{description}}</h5>
+
+    <div>
+        <div class="form-group">
+            <label for="file">Choose File</label>
+            <input type="file" id="file" (change)="onFileChange($event)">
+            <button (click)="uploadFile()" [disabled]="!theFile">Upload File</button>
+        </div>
+    </div>
+
+</div>

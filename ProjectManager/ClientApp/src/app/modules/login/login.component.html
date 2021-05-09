@@ -1,0 +1,21 @@
+<div class="mainForm">
+  <h3>Please Login</h3>
+  <p>
+    <mat-form-field appearance="legacy">
+      <mat-label>Username</mat-label>
+      <input type="text" [(ngModel)]="username" matInput placeholder="Username">
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field appearance="legacy">
+      <mat-label>Password</mat-label>
+      <input type="password" [(ngModel)]="password" matInput placeholder="Password">
+    </mat-form-field>
+  </p>
+
+  <div>
+    <button (click)="onSubmit()" type="button" mat-flat-button color="primary">Log in</button>
+    <a mat-stroked-button routerLink="/register" style="margin-left: 10px;">Sign up</a>
+  </div>
+</div>

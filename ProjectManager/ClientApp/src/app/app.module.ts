@@ -12,6 +12,44 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
+import { AppRoutingModule } from './app-routing.module';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
+import { DeleteProjectDialog, ProjectsListComponent } from './projects-list/projects-list.component';
+import { StudentsListComponent } from './students-list/students-list.component';
+import { SharedModule } from './modules/shared/shared.module';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from "@angular/material/select";
+import { MatSortModule } from '@angular/material/sort';
+
+import { RegisterComponent } from './modules/register/register.component';
+import { ClarityModule } from '@clr/angular';
+import { LoginComponent } from './modules/login/login.component';
+import { AuthenticationService } from './services/authentication.service';
+import { JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
+//import { RefreshTokenInterceptor } from './modules/refresh-token-interceptor';
+import { ChatComponent } from './modules/chat/chat.component';
+import { SharedService } from './modules/shared/sharedService';
+import { CreateProjectComponent } from './create-project/create-project.component';
+import { AddUserDialog } from './students-list/students-list.component';
+import { DeleteUserDialog } from './students-list/students-list.component';
+import { EditUserDialog } from './students-list/students-list.component';
+import { ProjectsService} from './projects-list/projects.service';
+import { EditProjectComponent } from './projects-list/edit-project/edit-project.component';
+import { DeleteTaskDialog, TaskListComponent } from './projects-list/task-list/task-list.component';
+import { EditListComponent } from './projects-list/task-list/edit-list/edit-list.component';
+import { FileUploadComponent } from './projects-list/file-upload/file-upload.component';
+import { CoreModule } from './modules/core.module';
+import { UnauthorizedInterceptor } from './modules/interceptors/unauthorized.interceptor';
 
 @NgModule({
   declarations: [
@@ -19,20 +57,65 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
     NavMenuComponent,
     HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent, 
+    ProjectsListComponent,
+    StudentsListComponent,
+    RegisterComponent,
+    LoginComponent,
+    ChatComponent,
+    CreateProjectComponent,
+    AddUserDialog,
+    DeleteUserDialog,
+    EditUserDialog,
+    EditProjectComponent,
+    DeleteProjectDialog,
+    TaskListComponent,
+    DeleteTaskDialog,
+    EditListComponent,
+    FileUploadComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ClarityModule,
+    FormsModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTableModule,
+    MatButtonModule,
+    SharedModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
+    HttpClientModule,
+    MatDialogModule,
+    MatSelectModule,
+    MatSortModule,
+    CoreModule,
     HttpClientModule,
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
+      { path: '', redirectTo: '/projects', pathMatch: 'full' },
+      { path: 'projects', component: ProjectsListComponent, canActivate: [AuthGuard] },
+      { path: 'register', component: RegisterComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
+      { path: 'students', component: StudentsListComponent, canActivate: [AuthGuard] },
+      { path: 'newproject', component: CreateProjectComponent, canActivate: [AuthGuard] },
+      { path: 'editproject/:id', component: EditProjectComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+      { path: 'tasklist/:id', component: TaskListComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+      { path: 'tasklist/edit/:id/:returnid', component: EditListComponent, canActivate: [AuthGuard], pathMatch: 'full' },
+      { path: 'uploadfile/:id', component: FileUploadComponent, canActivate: [AuthGuard], pathMatch: 'full' }
+
     ])
   ],
   providers: [
+    SharedService,
+    ProjectsService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
