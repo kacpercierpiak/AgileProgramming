@@ -1,0 +1,24 @@
+<div class="container">
+    <h1>New project</h1>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Project Name</mat-label>
+            <input type="text" [(ngModel)]="projectName" matInput placeholder="Project Name">
+        </mat-form-field>
+    </p>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <textarea [(ngModel)]="description" matInput rows="5"></textarea>
+        </mat-form-field>
+    <p>
+        <mat-form-field appearance="fill">
+            <mat-label>Deadline</mat-label>
+            <input type="datetime-local" [(ngModel)]="deadline" matInput placeholder="Deadline">
+        </mat-form-field>
+    </p>
+    <p>
+        <button mat-raised-button (click)="onSubmit()" type="button">Create</button>
+        <button mat-raised-button routerLink="/projects">Cancel</button>
+    </p>
+</div>

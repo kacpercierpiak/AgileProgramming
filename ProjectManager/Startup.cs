@@ -9,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebApplication1.Data;
-using WebApplication1.Models;
+
+using ProjectManager.Data;
+using ProjectManager.Models;
+using ProjectManager.Services;
+using System;
+
 
 namespace WebApplication1
 {
@@ -26,15 +30,16 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<ProjectContext>(options =>
+            options.UseNpgsql(Configuration.GetConnectionString("DB"), options => options.SetPostgresVersion(new Version(11, 9))));
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            options.UseNpgsql(Configuration.GetConnectionString("Auth"), options => options.SetPostgresVersion(new Version(11, 9))));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddSignalR();
             services.AddIdentityServer()
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
@@ -78,10 +83,13 @@ namespace WebApplication1
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                
+                endpoints.MapHub<ChatHubService>("/api/chatsocket");
             });
 
             app.UseSpa(spa =>

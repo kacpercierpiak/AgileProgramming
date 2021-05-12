@@ -1,16 +1,12 @@
-<ul class="navbar-nav" *ngIf="isAuthenticated | async">
-    <li class="nav-item">
-        <a  class="nav-link text-dark" [routerLink]='["/authentication/profile"]' title="Manage">Hello {{ userName | async }}</a>
-    </li>
-    <li class="nav-item">
-        <a  class="nav-link text-dark" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">Logout</a>
-    </li>
-</ul>
-<ul class="navbar-nav" *ngIf="!(isAuthenticated | async)">
-  <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/register"]'>Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/login"]'>Login</a>
-    </li>
-</ul>
+
+<div *ngIf="isAuthenticated | async" style="position: absolute; right: 110px; top:5">
+    <h6 [routerLink]='["/authentication/register"]'>{{ userName | async }}</h6>      
+</div>
+
+<button  *ngIf="isAuthenticated | async" color="primary" [routerLink]='["/authentication/logout"]'
+style="position: absolute; right: 10px;top:5" mat-raised-button>Logout</button>
+
+<div *ngIf="!(isAuthenticated | async)">
+    <button color="primary" [routerLink]='["/authentication/register"]' style="position: absolute; right: 55px;" mat-raised-button> Register</button>
+    <button color="primary" [routerLink]='["/authentication/login"]' style="position: absolute; right: 15px;" mat-raised-button>Login</button>
+</div>

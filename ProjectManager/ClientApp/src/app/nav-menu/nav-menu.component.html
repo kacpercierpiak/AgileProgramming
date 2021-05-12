@@ -1,45 +1,31 @@
-<header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">WebApplication1</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
-          </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
-          </li>
-        </ul>
-        <app-login-menu></app-login-menu>
-      </div>
+<mat-toolbar color="primary" *ngIf="loaded">
+  <mat-toolbar-row>
+    <h1 [routerLink]="['/']">ProjectManager</h1>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="'/projects'"> Projects </a>
+      <a mat-button [routerLink]="'/students'"> Users </a>
     </div>
-  </nav>
-</header>
+
+    <div *ngIf="isAuthenticated | async" style="position: absolute; right: 110px;">
+      <h6 [routerLink]='["/authentication/profile"]'>{{ userName | async }}</h6>      
+  </div>
+  
+  <button  *ngIf="isAuthenticated | async" color="primary" [routerLink]='["/authentication/logout"]'
+  style="position: absolute; right: 10px;top:5" mat-raised-button>Logout</button>
+  
+  
+    <button *ngIf="!(isAuthenticated | async)" color="primary" [routerLink]='["/authentication/login"]' style="position: absolute; right: 15px;" mat-raised-button>Login</button>
+      <button *ngIf="!(isAuthenticated | async)"  color="primary" [routerLink]='["/authentication/register"]' style="position: absolute; right: 105px;" mat-raised-button> Register</button>     
+
+  </mat-toolbar-row>
+</mat-toolbar>
+<app-cube-spinner [show]="!loaded" [outside]="true"></app-cube-spinner>
+<ng-container *ngIf="loaded">
+  <div class="wrapper mat-elevation-z3" style="padding:0;margin: 20px 50px;">
+    <div [ngClass]="animationActive ? 'main-anim' : ''">
+      <router-outlet></router-outlet>
+      <chat-module></chat-module>
+    </div>
+  </div>
+</ng-container>

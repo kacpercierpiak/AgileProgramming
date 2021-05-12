@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User, UserManager, WebStorageStateStore } from 'oidc-client';
 import { BehaviorSubject, concat, from, Observable } from 'rxjs';
 import { filter, map, mergeMap, take, tap } from 'rxjs/operators';
+import { SharedService } from 'src/app/modules/shared/sharedService';
 import { ApplicationPaths, ApplicationName } from './api-authorization.constants';
 
 export type IAuthenticationResult =
@@ -31,6 +32,7 @@ export enum AuthenticationResultStatus {
 
 export interface IUser {
   name?: string;
+  role?: number;
 }
 
 @Injectable({
@@ -43,10 +45,12 @@ export class AuthorizeService {
   private popUpDisabled = true;
   private userManager: UserManager;
   private userSubject: BehaviorSubject<IUser | null> = new BehaviorSubject(null);
+  user$: Observable<IUser | null> = this.userSubject.asObservable();
 
   public isAuthenticated(): Observable<boolean> {
     return this.getUser().pipe(map(u => !!u));
   }
+  constructor(private shared: SharedService) { }
 
   public getUser(): Observable<IUser | null> {
     return concat(
@@ -74,7 +78,7 @@ export class AuthorizeService {
     let user: User = null;
     try {
       user = await this.userManager.signinSilent(this.createArguments());
-      this.userSubject.next(user.profile);
+      this.userSubject.next(user.profile);   
       return this.success(state);
     } catch (silentError) {
       // User might not be authenticated, fallback to popup authentication
@@ -105,13 +109,14 @@ export class AuthorizeService {
         }
       }
     }
+  
   }
 
   public async completeSignIn(url: string): Promise<IAuthenticationResult> {
     try {
       await this.ensureUserManagerInitialized();
       const user = await this.userManager.signinCallback(url);
-      this.userSubject.next(user && user.profile);
+      this.userSubject.next(user && user.profile);    
       return this.success(user && user.state);
     } catch (error) {
       console.log('There was an error signing in: ', error);

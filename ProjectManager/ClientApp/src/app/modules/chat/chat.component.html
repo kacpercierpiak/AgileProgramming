@@ -1,0 +1,34 @@
+
+  <div class="ud-body">
+    <div class="ud-header">
+        <div *ngIf="show; else notShow">
+            <p>               
+                <button (click)= "toogle()" mat-icon-button color="primary" >
+                    <mat-icon>arrow_circle_down</mat-icon>
+                  </button>
+            </p>
+          </div>
+          <ng-template #notShow>
+            <p>               
+                <button (click)= "toogle()" mat-icon-button color="primary" >
+                    <mat-icon>arrow_circle_up</mat-icon>
+                  </button>
+            </p>
+          </ng-template>   
+     
+    
+        
+    </div>
+    <div [@openClose]="show ? 'open' : 'closed'">
+    <div class="msg-box" >
+      <ul>
+        <li *ngFor="let mObj of msgInboxArray" [ngClass]="mObj.user === msgDto.user ? 'in-msg' : 'ex-msg'">{{mObj.user}}<br /><span class="msg-italic-style">{{mObj.msgText}}</span></li>
+      </ul>
+    </div>
+    <div class="ud-flex-row">
+      <input id="msg" name="msg" #msg type="text" placeholder="Type message here" (keyup.enter)="send(msg.value)" class="msg-input" [(ngModel)]="msgDto.msgText"  />
+      <button class="ud-button" mat-mini-fab color="accent" (click)= "send(msg.value)"> <mat-icon>send</mat-icon></button>
+    </div>
+    
+    </div>
+  </div>

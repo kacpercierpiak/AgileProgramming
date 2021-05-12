@@ -1,0 +1,14 @@
+<h1 mat-dialog-title style="text-align: center;">Edit {{data.name}}</h1>
+<div mat-dialog-content>
+    <mat-form-field>
+        <mat-select placeholder="Select Role" [(ngModel)]="data.role">
+            <mat-option *ngFor="let key of keys; let i = index" [value]="key">
+                {{roles[i]}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions style="display: flex;align-items: center;justify-content: center;padding-top: 0;">
+    <button mat-raised-button [mat-dialog-close]="data">Change</button>
+    <button mat-raised-button (click)="onNoClick()">Cancel</button>
+</div>
