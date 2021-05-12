@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using ProjectManager.ConfigService;
 using ProjectManager.Data;
 using ProjectManager.Models;
 using ProjectManager.Services;
@@ -30,10 +30,12 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            DbCredentials connectionString = new DbCredentials();
+
             services.AddDbContext<ProjectContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("DB"), options => options.SetPostgresVersion(new Version(11, 9))));
+            options.UseNpgsql(connectionString.GetDBConnectionString(), options => options.SetPostgresVersion(new Version(11, 9))));
             services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("Auth"), options => options.SetPostgresVersion(new Version(11, 9))));
+            options.UseNpgsql(connectionString.GetDBConnectionString(), options => options.SetPostgresVersion(new Version(11, 9))));
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
