@@ -7,7 +7,7 @@ on:
 jobs:
   build-api:
     runs-on: ubuntu-latest
-    environment: CloudComputing
+    environment: AgileProgramming
     steps:
       - uses: actions/checkout@v2
       - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
