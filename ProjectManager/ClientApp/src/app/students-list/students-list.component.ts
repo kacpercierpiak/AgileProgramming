@@ -53,13 +53,7 @@ export class StudentsListComponent implements OnInit {
   sortedData = this.users.slice();
 
   ngOnInit(): void {
-    this.studentsService.getUsers().subscribe((data) => {
-      this.users = data;
-      this.dataSource = new MatTableDataSource(Array.from(this.users));
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    },
-      (error) => console.log(error));
+   this.refreshData();
     this.studentsService.getUserRole(this.shared.UserName).subscribe(role => {
       if (role != null) {
         if (Roles[role] == "Administrator") {
@@ -69,6 +63,16 @@ export class StudentsListComponent implements OnInit {
         }
       }
     });
+  }
+  refreshData()
+  {
+    this.studentsService.getUsers().subscribe((data) => {
+      this.users = data;
+      this.dataSource = new MatTableDataSource(Array.from(this.users));
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+    },
+      (error) => console.log(error));
   }
 
   applyFilter(event: Event) {
@@ -106,41 +110,18 @@ export class StudentsListComponent implements OnInit {
   role: number = 0;
   public errors: string[] = [""];
 
-  openAddDialog(): void {
-    const dialogRef = this.dialog.open(AddUserDialog, {
-      width: '250px',
-      data: { name: this.name, password: this.password }
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
 
-      if (result) {
-        if (result.name && result.password) {
-
-          this.auth.register(result.name, result.password).subscribe(() => {
-            window.location.reload();
-          }, (error: HttpErrorResponse) => {
-            if (error.error instanceof Array) {
-              this.errors = error.error.map(m => m.description);
-            }
-            else {
-              this.errors = [error.error.message];
-            }
-            alert(this.errors.join("\n"));
-          });
-        } else {
-          alert("You have to fill the fields");
-        }
-      }
-    });
-  }
 
   openDeleteDialog(user: string) {
     if (!this.disableButtons) {
       const dialogRef = this.dialog.open(DeleteUserDialog, {
         width: '250px',
         data: user
-      });      
+      });  
+      dialogRef.afterClosed().subscribe(result => {
+        this.refreshData();
+      });    
     }   
     
   }
@@ -157,7 +138,7 @@ export class StudentsListComponent implements OnInit {
           if (result.name && result.role) {
             const roleIndex: number = Object.keys(Roles).indexOf(result.role);
             this.studentsService.updateRole(user, roleIndex).subscribe(() => {
-              window.location.reload();
+              this.refreshData();
             }, (error: HttpErrorResponse) => {
               if (error.error instanceof Array) {
                 this.errors = error.error.map(m => m.description);
@@ -174,21 +155,6 @@ export class StudentsListComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'add-user-dialog',
-  templateUrl: 'add-user-dialog.html',
-})
-export class AddUserDialog {
-
-  constructor(
-    private dialogRef: MatDialogRef<AddUserDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: AddDialogData) { }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-}
 
 @Component({
   selector: 'delete-user-dialog',
@@ -210,7 +176,7 @@ export class DeleteUserDialog {
     this.dialogRef.close();
     if (user) {
       this.studentsService.deleteUser(user).subscribe(() => {
-        window.location.reload();
+        
       }, (error: HttpErrorResponse) => {
         if (error.error instanceof Array) {
           this.errors = error.error.map(m => m.description);

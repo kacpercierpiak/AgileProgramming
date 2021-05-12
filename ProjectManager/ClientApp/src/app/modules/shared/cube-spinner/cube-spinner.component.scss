@@ -20,7 +20,7 @@
 .show-container {
     display: flex;
     z-index: 999;
-    background-color: rgb(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .bg-fade-in {
@@ -33,21 +33,21 @@
 
 @keyframes bgFadeIn {
     from {
-        background-color: rgb(0, 0, 0, 0);
+        background-color: rgba(0, 0, 0, 0);
     }
 
     to {
-        background-color: rgb(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.3);
     }
 }
 
 @keyframes bgFadeOut {
     from {
-        background-color: rgb(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.3);
     }
 
     to {
-        background-color: rgb(0, 0, 0, 0);
+        background-color: rgba(0, 0, 0, 0);
     }
 }
 

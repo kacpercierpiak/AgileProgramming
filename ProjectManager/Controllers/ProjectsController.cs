@@ -53,7 +53,7 @@ namespace ProjectManager.Controllers
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
 
 
-        [Authorize]
+       
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProject(int id, Project project)
         {
@@ -88,7 +88,7 @@ namespace ProjectManager.Controllers
         // POST: api/Projects
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+    
         [HttpPost]
 
         public async Task<ActionResult<Project>> PostProject(Project project)
@@ -103,16 +103,10 @@ namespace ProjectManager.Controllers
         }
 
         // DELETE: api/Projects/5
-        [Authorize]
+       
         [HttpDelete("{id}")]
         public async Task<ActionResult<Project>> DeleteProject(int id)
-        {
-            var result = _userManager.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
-            if (result.role == Roles.Student)
-                return Unauthorized();
-
-
-
+        {  
             var project = await _context.Projects.FindAsync(id);
             if (project == null)
             {

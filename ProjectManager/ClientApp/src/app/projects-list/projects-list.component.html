@@ -40,9 +40,6 @@
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
             <button mat-icon-button aria-label="">
-                <mat-icon [routerLink]="['/uploadfile',element.projectId]">insert_drive_file</mat-icon>
-            </button>
-            <button mat-icon-button aria-label="">
                 <mat-icon [routerLink]="['/tasklist',element.projectId]">fact_check</mat-icon>
             </button>
             <button mat-icon-button [routerLink]="['/editproject',element.projectId]" aria-label="">

@@ -2,9 +2,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, of, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { delay, finalize, map, tap } from 'rxjs/operators';
-import { SharedService } from 'app/modules/shared/sharedService';
+import { SharedService } from 'src/app/modules/shared/sharedService';
 import { environment } from '../../environments/environment';
-import { User } from 'app/Dto/User';
+import { User } from 'src/app/Dto/User';
 import { Router } from '@angular/router';
 
 interface LoginResult {

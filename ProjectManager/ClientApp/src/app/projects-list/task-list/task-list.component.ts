@@ -3,8 +3,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from 'app/services/authentication.service';
-import { StudentsService } from 'app/students-list/students.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { StudentsService } from 'src/app/students-list/students.service';
 import { map } from 'rxjs/operators';
 import { User } from '../../Dto/User';
 import { Project } from '../Project';
@@ -33,7 +33,7 @@ export class TaskListComponent implements OnInit {
   dataSource = new MatTableDataSource<Task>();
   statuses = Statuses;
   public currentUser: User = new User(0,"","","");
-  disableButtons: boolean = true;
+  disableButtons: boolean = false;
 
   resultsLength = 0;
   isLoadingResults = true;
@@ -74,20 +74,22 @@ export class TaskListComponent implements OnInit {
   
   }
   openDeleteDialog(task: Task) {    
-    if(!this.disableButtons)
-    {
+    
     const dialogRef = this.dialog.open(DeleteTaskDialog, {
       width: '250px',
       data: task
-    });          
-  }
+    });    
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      this.refreshData();
+    });      
+  
   
 }
 openEditDialog(task: Task) {    
-  if(!this.disableButtons || task.assignId === this.currentUser.id || task.assign === "" )
-  {    
+    
     this.router.navigate(['/tasklist/edit',task.taskId,task.projectId]);       
-}
+
 
 }
   
@@ -95,7 +97,7 @@ openEditDialog(task: Task) {
   constructor(private projectService: ProjectsService,private route: ActivatedRoute,private router: Router, private dialog: MatDialog,private studentsService: StudentsService,private authService: AuthenticationService) { }
   ngOnInit(): void {
 
-    this.authService.user$.pipe(
+    /*this.authService.user$.pipe(
       map((user) => {
        
         if (user) {        
@@ -107,7 +109,7 @@ openEditDialog(task: Task) {
           return true;        
         } else return false;
       })      
-    ).subscribe();
+    ).subscribe();*/
 
 this.task.projectId = Number(this.route.snapshot.paramMap.get('id'));
     this.studentsService.getUsers().subscribe((data) => {
@@ -118,25 +120,29 @@ this.task.projectId = Number(this.route.snapshot.paramMap.get('id'));
 
     if(this.route.snapshot.paramMap.get('id') != null)
     {
-      this.projectService.GetTasks(Number(this.route.snapshot.paramMap.get('id'))).subscribe((data) => 
-      {
-        this.dataSource = new MatTableDataSource(Array.from(data));
-      });
-      this.projectService.getProjectDetails(Number(this.route.snapshot.paramMap.get('id'))).subscribe((data) => {
-        this.project = data;
-        console.dir(this.project.deadLine);
-        this.projectName = this.project.name;
-        this.deadline = data.deadLine.toString();
-        this.description = data.description;
-        
-      }, (error: HttpErrorResponse) => {
-        if (error && error.error) {
-          this.error = error.error;
-        }
-        alert(this.error);
-      });
+        this.refreshData();
     }    
     
+  }
+
+  refreshData(){
+    this.projectService.GetTasks(Number(this.route.snapshot.paramMap.get('id'))).subscribe((data) => 
+    {
+      this.dataSource = new MatTableDataSource(Array.from(data));
+    });
+    this.projectService.getProjectDetails(Number(this.route.snapshot.paramMap.get('id'))).subscribe((data) => {
+      this.project = data;
+      console.dir(this.project.deadLine);
+      this.projectName = this.project.name;
+      this.deadline = data.deadLine.toString();
+      this.description = data.description;
+      
+    }, (error: HttpErrorResponse) => {
+      if (error && error.error) {
+        this.error = error.error;
+      }
+      alert(this.error);
+    });
   }
 
   
@@ -165,7 +171,7 @@ export class DeleteTaskDialog {
     this.dialogRef.close();
     if (task) {
       this.projectsService.deleteTask(task).subscribe(() => {
-        window.location.reload();
+        
       }, (error: HttpErrorResponse) => {
         if (error.error instanceof Array) {
           this.errors = error.error.map(m => m.description);

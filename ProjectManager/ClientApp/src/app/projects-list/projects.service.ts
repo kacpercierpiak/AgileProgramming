@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Project } from './Project';
 import { Observable } from 'rxjs';
 import { Statuses, Task } from './task-list/task';
-import { User } from 'app/Dto/User';
+import { User } from 'src/app/Dto/User';
 
 
 @Injectable({

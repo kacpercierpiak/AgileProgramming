@@ -88,7 +88,7 @@ namespace ProjectManager.Controllers
         // PUT: api/Tasks/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+      
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTask(int id, Models.Dto.Task task)
         {
@@ -96,15 +96,7 @@ namespace ProjectManager.Controllers
             if (id != task.TaskId)
             {
                 return BadRequest();
-            }
-            var result = _userManager.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
-
-            if (result.role == Roles.Student)
-            {
-                taskResult = await _context.Tasks.Where(x => x.TaskId == id).FirstOrDefaultAsync();
-                if (taskResult.assignId != null && taskResult.assignId != result.Id)
-                    return Unauthorized();
-            }
+            }      
 
             if (taskResult != null)
             {
@@ -137,7 +129,7 @@ namespace ProjectManager.Controllers
         // POST: api/Tasks
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [Authorize]
+       
         [HttpPost]
         public async Task<ActionResult<Models.Dto.Task>> PostTask(Models.Dto.Task task)
         {
@@ -149,15 +141,11 @@ namespace ProjectManager.Controllers
         }
 
         // DELETE: api/Tasks/5
-        [Authorize]
+       
         [HttpDelete("{id}")]
         public async Task<ActionResult<Models.Dto.Task>> DeleteTask(int id)
         {
-            var result = _userManager.Users.Where(x => x.UserName == User.Identity.Name).FirstOrDefault();
-            if (result.role == Roles.Student)
-                return Unauthorized();
-
-            var task = await _context.Tasks.FindAsync(id);
+           var task = await _context.Tasks.FindAsync(id);
             if (task == null)
             {
                 return NotFound();

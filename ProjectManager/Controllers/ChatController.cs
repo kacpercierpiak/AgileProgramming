@@ -22,7 +22,7 @@ namespace ProjectManager.Controllers
             _hubContext = hubContext;
         }
 
-        [Authorize]
+       
         [Route("send")]                                           //path looks like this: https://localhost:44379/api/chat/send
         [HttpPost]
         public IActionResult SendRequest([FromBody] MessageDto msg)

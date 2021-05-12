@@ -1,10 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Project } from 'app/projects-list/Project';
-import { ProjectsService } from 'app/projects-list/projects.service';
-import { StudentsService } from 'app/students-list/students.service';
-import { User } from 'app/Dto/User';
+import { Project } from 'src/app/projects-list/Project';
+import { ProjectsService } from 'src/app/projects-list/projects.service';
+import { StudentsService } from 'src/app/students-list/students.service';
+import { User } from 'src/app/Dto/User';
 import { Statuses, Task } from '../task';
 
 @Component({

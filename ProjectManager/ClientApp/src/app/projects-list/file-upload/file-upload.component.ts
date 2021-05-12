@@ -3,7 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentsService } from 'app/students-list/students.service';
+import { StudentsService } from 'src/app/students-list/students.service';
 import { User } from '../../Dto/User'
 import { Project } from '../Project';
 import { ProjectsService } from '../projects.service';

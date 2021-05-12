@@ -12,7 +12,6 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ApiAuthorizationModule } from 'src/api-authorization/api-authorization.module';
 import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
-import { AppRoutingModule } from './app-routing.module';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconModule } from '@angular/material/icon';
@@ -40,7 +39,7 @@ import { JwtInterceptor, JwtModule } from '@auth0/angular-jwt';
 import { ChatComponent } from './modules/chat/chat.component';
 import { SharedService } from './modules/shared/sharedService';
 import { CreateProjectComponent } from './create-project/create-project.component';
-import { AddUserDialog } from './students-list/students-list.component';
+
 import { DeleteUserDialog } from './students-list/students-list.component';
 import { EditUserDialog } from './students-list/students-list.component';
 import { ProjectsService} from './projects-list/projects.service';
@@ -64,7 +63,7 @@ import { UnauthorizedInterceptor } from './modules/interceptors/unauthorized.int
     LoginComponent,
     ChatComponent,
     CreateProjectComponent,
-    AddUserDialog,
+  
     DeleteUserDialog,
     EditUserDialog,
     EditProjectComponent,
@@ -76,7 +75,7 @@ import { UnauthorizedInterceptor } from './modules/interceptors/unauthorized.int
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    AppRoutingModule,
+ 
     BrowserAnimationsModule,
     ClarityModule,
     FormsModule,
@@ -99,19 +98,18 @@ import { UnauthorizedInterceptor } from './modules/interceptors/unauthorized.int
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', redirectTo: '/projects', pathMatch: 'full' },
-      { path: 'projects', component: ProjectsListComponent, canActivate: [AuthGuard] },
-      { path: 'register', component: RegisterComponent },
-      { path: 'login', component: LoginComponent },
-      { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
-      { path: 'students', component: StudentsListComponent, canActivate: [AuthGuard] },
-      { path: 'newproject', component: CreateProjectComponent, canActivate: [AuthGuard] },
-      { path: 'editproject/:id', component: EditProjectComponent, canActivate: [AuthGuard], pathMatch: 'full' },
-      { path: 'tasklist/:id', component: TaskListComponent, canActivate: [AuthGuard], pathMatch: 'full' },
-      { path: 'tasklist/edit/:id/:returnid', component: EditListComponent, canActivate: [AuthGuard], pathMatch: 'full' },
-      { path: 'uploadfile/:id', component: FileUploadComponent, canActivate: [AuthGuard], pathMatch: 'full' }
-
-    ])
+    { path: '', redirectTo: '/projects', pathMatch: 'full' },
+    { path: 'projects', component: ProjectsListComponent, canActivate: [AuthorizeGuard] },
+    { path: 'register', component: RegisterComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'chat', component: ChatComponent, canActivate: [AuthorizeGuard] },
+    { path: 'students', component: StudentsListComponent, canActivate: [AuthorizeGuard] },
+    { path: 'newproject', component: CreateProjectComponent, canActivate: [AuthorizeGuard] },
+    { path: 'editproject/:id', component: EditProjectComponent, canActivate: [AuthorizeGuard], pathMatch: 'full' },
+    { path: 'tasklist/:id', component: TaskListComponent, canActivate: [AuthorizeGuard], pathMatch: 'full' },
+    { path: 'tasklist/edit/:id/:returnid', component: EditListComponent, canActivate: [AuthorizeGuard], pathMatch: 'full' },
+    { path: 'uploadfile/:id', component: FileUploadComponent, canActivate: [AuthorizeGuard], pathMatch: 'full' }
+], { relativeLinkResolution: 'legacy' })
   ],
   providers: [
     SharedService,

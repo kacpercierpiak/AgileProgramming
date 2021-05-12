@@ -83,11 +83,13 @@ namespace WebApplication1
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
-                endpoints.MapHub<ChatHubService>("/chatsocket");
+                
+                endpoints.MapHub<ChatHubService>("/api/chatsocket");
             });
 
             app.UseSpa(spa =>

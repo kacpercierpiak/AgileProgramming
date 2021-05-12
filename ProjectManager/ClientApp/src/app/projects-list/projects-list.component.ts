@@ -9,9 +9,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { HttpErrorResponse } from '@angular/common/http';
-import { AuthenticationService } from 'app/services/authentication.service';
+import { AuthenticationService } from 'src/app/services/authentication.service';
 import { map } from 'rxjs/operators';
-import { User } from 'app/Dto/User';
+import { User } from 'src/app/Dto/User';
+import { AuthorizeService, IUser } from 'src/api-authorization/authorize.service';
 
 
 @Component({
@@ -24,12 +25,12 @@ export class ProjectsListComponent implements OnInit {
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
 
-  public currentUser: User = new User(0,"","","");
+  public currentUser: IUser | null;
   disableButtons: boolean = true;
   projects: Project[] = [];
 
   dataSource = new MatTableDataSource<Project>();
-  constructor(private projectsService: ProjectsService, private dialog: MatDialog,private authService: AuthenticationService) {
+  constructor(private projectsService: ProjectsService, private dialog: MatDialog,private authService: AuthorizeService) {
 
   }
 
@@ -37,10 +38,13 @@ export class ProjectsListComponent implements OnInit {
    
     this.authService.user$.pipe(
       map((user) => {
+        console.log(1);
+        console.log(user);
        
-        if (user) {        
+        if (user) {      
         
           this.currentUser = user;
+          console.log(this.currentUser.role)
           if(this.currentUser.role!=2)
           this.disableButtons = false;
           return true;        
@@ -49,6 +53,12 @@ export class ProjectsListComponent implements OnInit {
     ).subscribe();
 
     
+    this.refreshData();
+
+  }
+
+  refreshData()
+  {
     this.projectsService.getProjets().subscribe((data) => {
       this.projects = data;
       console.dir(data);
@@ -58,7 +68,6 @@ export class ProjectsListComponent implements OnInit {
     },
       (error) => console.log(error)
       );
-
   }
 
 
@@ -76,7 +85,12 @@ export class ProjectsListComponent implements OnInit {
       const dialogRef = this.dialog.open(DeleteProjectDialog, {
         width: '250px',
         data: project
-      });       
+      });
+      
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.refreshData();
+      });
     }   
     
   }
@@ -108,7 +122,7 @@ export class DeleteProjectDialog {
     this.dialogRef.close();
     if (project) {
       this.projectsService.delete(project).subscribe(() => {
-        window.location.reload();
+        
       }, (error: HttpErrorResponse) => {
         if (error.error instanceof Array) {
           this.errors = error.error.map(m => m.description);
