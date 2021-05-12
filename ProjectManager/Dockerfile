@@ -12,7 +12,7 @@ RUN apt install nodejs npm -y
 WORKDIR /src
 COPY ["ProjectManager.csproj", ""]
 RUN npm install npm@latest -g
-RUN dotnet restore "./SPA.csproj"
+RUN dotnet restore "./ProjectManager.csproj"
 COPY . .
 WORKDIR "/src/."
 RUN dotnet build "ProjectManager.csproj" -c Release -o /app/build
