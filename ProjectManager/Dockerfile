@@ -5,6 +5,7 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 RUN apt update
 RUN apt install nodejs npm -y
@@ -23,4 +24,5 @@ RUN dotnet publish "ProjectManager.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ProjectManager.dll"]
+
+ENTRYPOINT ["dotnet", "ProjectManager.dll", "--environment=Development"]

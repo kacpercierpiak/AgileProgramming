@@ -39,7 +39,7 @@ namespace ProjectManager.ConfigService
 
         public string GetDBConnectionString()
         {
-            return $"Host = {dbHost}; Port = {dbPort}; Database = {dbName}; Username = {dbUsername}; Password = {dbPassword}";
+            return $"Host = {dbHost}; Port = {dbPort}; Database = {dbName}; Username = {dbUsername}; Password = {dbPassword} ;SSL Mode=Require;Trust Server Certificate=true";
         }
     }
     public class Settings
