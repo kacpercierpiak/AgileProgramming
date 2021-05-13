@@ -37,7 +37,7 @@ namespace WebApplication1
                                   builder =>
                                   {
                                       builder.WithOrigins("https://agileprogramming.herokuapp.com",
-                                                          "http://agileprogramming.herokuapp.com").AllowCredentials(); 
+                                                          "http://agileprogramming.herokuapp.com").AllowAnyHeader().AllowCredentials(); 
                                   });
             });
             DbCredentials connectionString = new DbCredentials();
