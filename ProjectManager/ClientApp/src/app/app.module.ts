@@ -29,6 +29,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from '@angular/material/sort';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { RegisterComponent } from './modules/register/register.component';
 import { ClarityModule } from '@clr/angular';
@@ -75,7 +76,7 @@ import { UnauthorizedInterceptor } from './modules/interceptors/unauthorized.int
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
- 
+    MatDatepickerModule,
     BrowserAnimationsModule,
     ClarityModule,
     FormsModule,
