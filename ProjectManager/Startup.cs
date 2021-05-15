@@ -85,9 +85,9 @@ namespace WebApplication1
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
-                
+                app.UseSpaStaticFiles();
             }
-            app.UseSpaStaticFiles();
+           
 
             app.UseRouting();
           
@@ -114,7 +114,7 @@ namespace WebApplication1
 
                 if (env.IsDevelopment())
                 {
-                   // spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }

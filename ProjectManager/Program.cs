@@ -36,9 +36,10 @@ namespace WebApplication1
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    var port = Environment.GetEnvironmentVariable("PORT");
+                    var port = Environment.GetEnvironmentVariable("PORT") ?? "443";
+
                     webBuilder.UseStartup<Startup>()
-                    .UseUrls("http://*:" + port);
+                    .UseUrls("https://*:" + port);
                 });
     }
 }

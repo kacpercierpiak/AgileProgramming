@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ProjectService } from './project.service';
 import { stringify } from '@angular/compiler/src/util';
-
 @Component({
   selector: 'app-create-project',
   templateUrl: './create-project.component.html',
