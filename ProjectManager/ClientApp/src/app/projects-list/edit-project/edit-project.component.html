@@ -14,12 +14,11 @@
     <p>
         <mat-form-field appearance="fill">
             <mat-label>Deadline</mat-label>            
-            <input matInput type="string"  [matDatepicker]="picker" (focus)="picker.open()" (click)="picker.open()" readonly [(ngModel)]="deadline" matInput placeholder="Deadline" >
-            <mat-datepicker #picker></mat-datepicker>
+            <input type="date" matInput [(ngModel)]="deadline">
         </mat-form-field>
     </p>
     <p>
-        <button mat-raised-button (click)="onSubmit()" type="button">Create</button>
+        <button mat-raised-button (click)="onSubmit()" type="button">Edit</button>
         <button mat-raised-button routerLink="/projects">Cancel</button>
     </p>
 </div>
