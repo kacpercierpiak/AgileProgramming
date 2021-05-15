@@ -82,14 +82,15 @@ namespace WebApplication1
             }
 
             app.UseCors(MyAllowSpecificOrigins);
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
+            app.UseStaticFiles();         
+
+            if (Environment.GetEnvironmentVariable("PORT") != null)
             {
                 app.UseSpaStaticFiles();
             }
-           
 
-            app.UseRouting();
+
+                app.UseRouting();
           
             app.UseAuthentication();
             app.UseIdentityServer();
@@ -114,7 +115,8 @@ namespace WebApplication1
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    if(Environment.GetEnvironmentVariable("PORT")==null)
+                        spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }
