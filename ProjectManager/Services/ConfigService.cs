@@ -23,8 +23,12 @@ namespace ProjectManager.ConfigService
 
         public DbCredentials()
         {
-            var parsVal = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL"));
-            ParseData(parsVal);
+            if (Environment.GetEnvironmentVariable("DATABASE_URL") != null)
+            {
+                var parsVal = new Uri(Environment.GetEnvironmentVariable("DATABASE_URL"));
+
+                ParseData(parsVal);
+            }
         }
 
         private void ParseData(Uri parsVal)
@@ -39,7 +43,9 @@ namespace ProjectManager.ConfigService
 
         public string GetDBConnectionString()
         {
+            if(dbHost!="")
             return $"Host = {dbHost}; Port = {dbPort}; Database = {dbName}; Username = {dbUsername}; Password = {dbPassword} ;SSL Mode=Require;Trust Server Certificate=true";
+            return $"Host=localhost;Port=5433;Database=projectDBGit;Username=web_user;Password=12345";
         }
     }
     public class Settings
