@@ -25,11 +25,10 @@ export class EditProjectComponent implements OnInit {
     if(this.route.snapshot.paramMap.get('id') != null)
     {
       this.projectService.getProjectDetails(Number(this.route.snapshot.paramMap.get('id'))).subscribe((data) => {
-        this.project = data;
-        console.dir(this.project.deadLine);
+        this.project = data;    
         this.projectName = this.project.name;
-        this.deadline = data.deadLine.toString();
-        this.description = data.description;
+        this.deadline = data.deadLine.toString().split("T")[0];
+        this.description = data.description;      
         
       }, (error: HttpErrorResponse) => {
         if (error && error.error) {
