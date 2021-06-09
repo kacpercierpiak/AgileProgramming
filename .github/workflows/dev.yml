@@ -1,0 +1,19 @@
+name: Deploy-Dev
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+    environment: AgileProgramming
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "agileprogramming-dev" #Must be unique in Heroku
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          usedocker: true
+          appdir: "ProjectManager" # <- This will point to the api folder in your project  
