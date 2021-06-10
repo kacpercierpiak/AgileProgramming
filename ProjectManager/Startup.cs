@@ -56,7 +56,17 @@ namespace WebApplication1
                 .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
             services.AddAuthentication()
-                .AddIdentityServerJwt();
+                .AddIdentityServerJwt()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = Environment.GetEnvironmentVariable("GoogleClientId", EnvironmentVariableTarget.Machine);
+                    options.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret", EnvironmentVariableTarget.Machine);
+                })
+                .AddFacebook(options =>
+                {
+                    options.AppId = Environment.GetEnvironmentVariable("FacebookClientId", EnvironmentVariableTarget.Machine);
+                    options.ClientSecret = Environment.GetEnvironmentVariable("FacebookClientSecret", EnvironmentVariableTarget.Machine);
+                });
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
