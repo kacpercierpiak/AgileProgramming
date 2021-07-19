@@ -30,6 +30,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from "@angular/material/select";
 import { MatSortModule } from '@angular/material/sort';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 import { RegisterComponent } from './modules/register/register.component';
 import { ClarityModule } from '@clr/angular';
@@ -85,6 +86,7 @@ import { UnauthorizedInterceptor } from './modules/interceptors/unauthorized.int
     MatSidenavModule,
     MatListModule,
     MatTableModule,
+    DragDropModule,
     MatButtonModule,
     SharedModule,
     MatFormFieldModule,
