@@ -37,7 +37,7 @@ namespace WebApplication1
                                   builder =>
                                   {
                                       builder.WithOrigins("https://agileprogramming.herokuapp.com",
-                                                          "http://agileprogramming.herokuapp.com").AllowAnyHeader().AllowCredentials(); 
+                                                          "http://agileprogramming.herokuapp.com").AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed(origin => true); 
                                   });
             });
             DbCredentials connectionString = new DbCredentials();
@@ -57,6 +57,19 @@ namespace WebApplication1
 
             services.AddAuthentication()
                 .AddIdentityServerJwt();
+
+            services.AddAuthentication().AddGoogle(options =>
+            {
+                options.ClientId = Environment.GetEnvironmentVariable("GoogleClientId");
+                options.ClientSecret = Environment.GetEnvironmentVariable("GoogleClientSecret");
+            });
+
+            services.AddAuthentication().AddFacebook(options =>
+            {
+                options.AppId = Environment.GetEnvironmentVariable("FacebookClientId");
+                options.ClientSecret = Environment.GetEnvironmentVariable("FacebookClientSecret");
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
             // In production, the Angular files will be served from this directory
